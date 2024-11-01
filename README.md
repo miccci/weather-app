@@ -1,50 +1,83 @@
-# React + TypeScript + Vite
+# Weather App 🌤️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple, responsive weather application built with TypeScript, React, and Vite. This app allows users to search for real-time weather information for any location, showing the current temperature, weather conditions, and a 7-day forecast.
 
-Currently, two official plugins are available:
+![Screenshot](public/app_screenshot.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies
 
-## Expanding the ESLint configuration
+This project is built with the following technologies:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React** - A JavaScript library for building user interfaces.
+- **TypeScript** - A strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
+- **Vite** - A fast development environment and build tool for modern web projects.
+- **Google Places API** - Used for location search and autocomplete functionality.
+- **Weatherbit API** - Provides weather data, including current weather, forecasts, and other meteorological information.
 
-- Configure the top-level `parserOptions` property like this:
+### Why These Technologies?
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **Vite** enables faster build times and a smooth development experience compared to traditional build tools.
+- **TypeScript** ensures type safety, making the code more maintainable and less error-prone.
+- **Google Places API** allows for accurate and responsive location-based search functionality.
+- **Weatherbit API** is reliable and offers extensive weather data to enhance the app's features.
+
+By combining these technologies, this app provides an optimized, maintainable, and interactive experience for users looking to get weather updates for various locations.
+
+
+## Features
+
+- 🌍 Search weather by city, country, or region.
+- ☀️ Display current temperature, weather condition, max/min temperatures, and rain probability.
+- 📅 View a 7-day weather forecast.
+- 🖥️ Responsive design, optimized for both mobile and desktop.
+
+## Installation
+
+To get a local copy up and running, follow these steps:
+
+### Prerequisites
+
+- **Node.js** (v14 or higher)
+- **npm** or **yarn**
+
+### Clone the Repository
+
+
+```bash
+git clone https://github.com/miccci/weather-app.git
+cd weather-app
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Install Dependencies
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Using npm:
+```bash
+npm install
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+Using yarn:
+```bash
+yarn install
+```
+
+### Environment Variables
+
+This project requires environment variables to configure API keys and other settings. Follow the steps below to set them up:
+
+1. Create a `.env` file in the root of the project.
+2. Add the required environment variables to the `.env` file. The following variables are needed:
+
+   ```plaintext
+   VITE_GOOGLE_PLACES_API_KEY=your_api_key_here
+   VITE_WEATHER_API_KEY=your_api_key_here
+
+### Start the app
+
+```bash
+npm run dev
+```
+or
+
+```bash
+yarn dev
 ```
