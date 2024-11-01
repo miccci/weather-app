@@ -6,7 +6,7 @@ import TempMinIcon from "./assets/temp_min.svg"
 import TempMaxIcon from "./assets/temp_max.svg"
 import RainIcon from "./assets/rain.svg"
 import SearchIcon from "./assets/search.svg"
-import {DeleteIcon} from "./assets/delete"
+import DeleteIcon from "./assets/delete.svg"
 import "./App.css"
 
 const App: React.FC = () => {
@@ -59,49 +59,54 @@ const App: React.FC = () => {
 
       console.log("weatherbit api res: ", weatherResponse.data.data)
 
-      const weatherToday: DailyForecast = {
-        datetime: formatDate(weatherResponse.data.data[0].datetime),
-        dayName: formatDayName(weatherResponse.data.data[0].datetime),
-        temp: weatherResponse.data.data[0].temp,
-        minTemp: weatherResponse.data.data[0].min_temp,
-        maxTemp: weatherResponse.data.data[0].max_temp,
-        rain: weatherResponse.data.data[0].precip,
-        weather: {
-          description: weatherResponse.data.data[0].weather.description,
-          icon: weatherResponse.data.data[0].weather.icon,
-        },
-      }
+      const weatherDailyForecast = weatherResponse.data.data.map(
+        (item: WeatherbitAPIDay): DailyForecast => ({
+          datetime: formatDate(item.datetime),
+          dayName: formatDayName(item.datetime),
+          temp: item.temp,
+          minTemp: item.min_temp,
+          maxTemp: item.max_temp,
+          rain: item.precip,
+          weather: {
+            description: item.weather.description,
+            icon: item.weather.icon,
+          },
+        })
+      )
 
-      const upcomingDays = weatherResponse.data.data.slice(1)
+      console.log("weatherDailyForecast: ", weatherDailyForecast)
 
-      console.log("const weatherToday: ", weatherToday)
-      console.log("const upcomingDays: ", upcomingDays)
+      // const weatherToday: DailyForecast = {
+      //   datetime: formatDate(weatherResponse.data.data[0].datetime),
+      //   dayName: formatDayName(weatherResponse.data.data[0].datetime),
+      //   temp: weatherResponse.data.data[0].temp,
+      //   minTemp: weatherResponse.data.data[0].min_temp,
+      //   maxTemp: weatherResponse.data.data[0].max_temp,
+      //   rain: weatherResponse.data.data[0].precip,
+      //   weather: {
+      //     description: weatherResponse.data.data[0].weather.description,
+      //     icon: weatherResponse.data.data[0].weather.icon,
+      //   },
+      // }
+
+      //const upcomingDays = weatherResponse.data.data.slice(1)
+
+      //console.log("const weatherToday: ", weatherToday)
+      //console.log("const upcomingDays: ", upcomingDays)
 
       const forecastData: ForecastUpcomingDays = {
-        days: upcomingDays.map(
-          (item: WeatherbitAPIDay): DailyForecast => ({
-            datetime: formatDate(item.datetime),
-            dayName: formatDayName(item.datetime),
-            temp: item.temp,
-            minTemp: item.min_temp,
-            maxTemp: item.max_temp,
-            rain: item.precip,
-            weather: {
-              description: item.weather.description,
-              icon: item.weather.icon,
-            },
-          })
-        ),
+        days: weatherDailyForecast.slice(1),
         location: {
           location_name: weatherResponse.data.city_name,
           country_code: weatherResponse.data.country_code,
           latitude: geolocation.lat,
           longitude: geolocation.lng,
         },
-        today: weatherToday,
+        today: weatherDailyForecast[0],
       }
 
       setForecast(forecastData)
+      console.log("forecastData: ", forecastData)
     } catch (error) {
       console.error("Error fetching weather data:", error)
     }
@@ -127,7 +132,7 @@ const App: React.FC = () => {
         <div className="search-bar">
           <img src={SearchIcon} alt="" />
           <input type="text" value={input} onChange={handleInputChange} placeholder="Search country, region, city" />
-          <span  onClick={handleDeleteClick} >{DeleteIcon}</span>
+          <span onClick={handleDeleteClick}>{DeleteIcon}</span>
         </div>
 
         {loading && <div>Loading...</div>}
@@ -144,33 +149,32 @@ const App: React.FC = () => {
         </ul>
 
         {forecast ? (
-        <div>
           <div>
-            <div className="current-weather">
-              {forecast.today.temp > 0 && <span>+</span>}
-              {forecast.today.temp} <br /> {forecast.location.location_name}
-            </div>
-            <div className="current-weather-desc">{forecast.today.weather.description}</div>
-            <div className="weather-stats">
-              <div>
-                <img src={TempMaxIcon} alt="" />
-                Max Temp: {forecast.today.maxTemp}
+            <div>
+              <div className="current-weather">
+                {forecast.today.temp > 0 && <span>+</span>}
+                {forecast.today.temp} <br /> {forecast.location.location_name}
               </div>
-              <div>
-                <img src={TempMinIcon} alt="" />
-                Min Temp: {forecast.today.minTemp}
-              </div>
-              <div>
-                <img src={RainIcon} alt="" />
-                Rain: {forecast.today.rain} mm
+              <div className="current-weather-desc">{forecast.today.weather.description}</div>
+              <div className="weather-stats">
+                <div>
+                  <img src={TempMaxIcon} alt="" />
+                  Max Temp: {forecast.today.maxTemp}
+                </div>
+                <div>
+                  <img src={TempMinIcon} alt="" />
+                  Min Temp: {forecast.today.minTemp}
+                </div>
+                <div>
+                  <img src={RainIcon} alt="" />
+                  Rain: {forecast.today.rain} mm
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <h2>No Data Available</h2>
-      )}
-
+        ) : (
+          <h2>No Data Available</h2>
+        )}
       </div>
 
       {forecast && (
@@ -191,7 +195,9 @@ const App: React.FC = () => {
                           alt={day.weather.description}
                           className="weather-icon"
                         />
-                        <div>{day.temp > 0 && <span>+</span>} {day.temp}</div>
+                        <div>
+                          {day.temp > 0 && <span>+</span>} {day.temp}
+                        </div>
                       </div>
                       {selectedDay === day && (
                         <div>
