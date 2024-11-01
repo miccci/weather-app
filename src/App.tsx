@@ -111,7 +111,7 @@ const App: React.FC = () => {
         <div className="search-bar">
           <img src={SearchIcon} alt="" />
           <input type="text" value={input} onChange={handleInputChange} placeholder="Search country, region, city" />
-          <img src={DeleteIcon} alt="" onClick={handleDeleteClick}/>
+          <img src={DeleteIcon} alt="" onClick={handleDeleteClick} />
         </div>
 
         {loading && <div>Loading...</div>}
@@ -138,15 +138,17 @@ const App: React.FC = () => {
               <div className="weather-stats">
                 <div>
                   <img src={TempMaxIcon} alt="" />
-                  Max Temp: {forecast.today.maxTemp}
+                  Max {forecast.today.maxTemp > 0 && <span>+</span>}
+                  {forecast.today.maxTemp}
                 </div>
                 <div>
                   <img src={TempMinIcon} alt="" />
-                  Min Temp: {forecast.today.minTemp}
+                  Min {forecast.today.minTemp > 0 && <span>+</span>}
+                  {forecast.today.minTemp}
                 </div>
                 <div>
                   <img src={RainIcon} alt="" />
-                  Rain: {forecast.today.rain} mm
+                  Rain {forecast.today.rain.toFixed(1)} mm
                 </div>
               </div>
             </div>
@@ -182,15 +184,16 @@ const App: React.FC = () => {
                         <div>
                           <div className="day-stats">
                             <img src={TempMaxIcon} alt="" className="weather-icon" />
-                            Max {day.maxTemp}
+                            Max {day.maxTemp > 0 && <span>+</span>}
+                            {day.maxTemp}
                           </div>
                           <div className="day-stats">
                             <img src={TempMinIcon} alt="" className="weather-icon" />
-                            Min {day.minTemp}
+                            Min {day.minTemp > 0 && <span>+</span>} {day.minTemp}
                           </div>
                           <div className="day-stats">
                             <img src={RainIcon} alt="" className="weather-icon" />
-                            Rain {day.rain.toFixed(2)} mm
+                            Rain {day.rain.toFixed(1)} mm
                           </div>
                         </div>
                       )}
