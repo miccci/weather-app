@@ -76,24 +76,6 @@ const App: React.FC = () => {
 
       console.log("weatherDailyForecast: ", weatherDailyForecast)
 
-      // const weatherToday: DailyForecast = {
-      //   datetime: formatDate(weatherResponse.data.data[0].datetime),
-      //   dayName: formatDayName(weatherResponse.data.data[0].datetime),
-      //   temp: weatherResponse.data.data[0].temp,
-      //   minTemp: weatherResponse.data.data[0].min_temp,
-      //   maxTemp: weatherResponse.data.data[0].max_temp,
-      //   rain: weatherResponse.data.data[0].precip,
-      //   weather: {
-      //     description: weatherResponse.data.data[0].weather.description,
-      //     icon: weatherResponse.data.data[0].weather.icon,
-      //   },
-      // }
-
-      //const upcomingDays = weatherResponse.data.data.slice(1)
-
-      //console.log("const weatherToday: ", weatherToday)
-      //console.log("const upcomingDays: ", upcomingDays)
-
       const forecastData: ForecastUpcomingDays = {
         days: weatherDailyForecast.slice(1),
         location: {
@@ -111,9 +93,6 @@ const App: React.FC = () => {
       console.error("Error fetching weather data:", error)
     }
   }
-
-  console.log("forecast useState: ", forecast?.days[0])
-  console.log("today's rain: ", forecast?.today.rain)
 
   const handleDeleteClick = () => {
     setInput("")
