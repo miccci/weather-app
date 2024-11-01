@@ -111,7 +111,7 @@ const App: React.FC = () => {
         <div className="search-bar">
           <img src={SearchIcon} alt="" />
           <input type="text" value={input} onChange={handleInputChange} placeholder="Search country, region, city" />
-          <span onClick={handleDeleteClick}>{DeleteIcon}</span>
+          <img src={DeleteIcon} alt="" onClick={handleDeleteClick}/>
         </div>
 
         {loading && <div>Loading...</div>}
