@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import axios from "axios"
-import { Suggestion, DailyForecast, ForecastUpcomingDays, WeatherbitAPIDay, WeatherbitAPIResponse } from "./types"
+import { Suggestion, DailyForecast, ForecastUpcomingDays, WeatherbitAPIDay, WeatherbitAPIResponse, AutocompleteAPIResponse, AutocompleteAPISuggestion, DetailsAPIResponse } from "./types"
 import { formatDate, formatDayName } from "./utils"
 import TempMinIcon from "./assets/temp_min.svg"
 import TempMaxIcon from "./assets/temp_max.svg"
@@ -26,11 +26,19 @@ const App: React.FC = () => {
     if (value) {
       setLoading(true)
       try {
-        const response = await axios.get(
+        const autocompleteResponse = await axios.get<AutocompleteAPIResponse>(
           `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${value}&key=${googleApiKey}`
         )
-        console.log("search autocomplete: ", response.data)
-        setSuggestions(response.data.predictions)
+        //console.log("search autocomplete: ", autocompleteResponse)
+
+        const autocompleteSuggestions = autocompleteResponse.data.predictions.map(
+          (item: AutocompleteAPISuggestion): Suggestion => ({
+            placeId: item.place_id,
+            description: item.description,
+          })
+        )
+        //console.log("autocompleteSuggestions: ", autocompleteSuggestions)
+        setSuggestions(autocompleteSuggestions)
       } catch (error) {
         console.error("Error fetching suggestions:", error)
       } finally {
@@ -45,12 +53,14 @@ const App: React.FC = () => {
     setInput("")
     setSuggestions([])
 
-    const placeId = suggestion.place_id
+    const placeId = suggestion.placeId
 
     try {
-      const detailsResponse = await axios.get(
+      const detailsResponse = await axios.get<DetailsAPIResponse>(
         `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${googleApiKey}`
       )
+      console.log("place api response: ", detailsResponse.data.result.geometry)
+
       const geolocation = detailsResponse.data.result.geometry.location
 
       const weatherResponse = await axios.get<WeatherbitAPIResponse>(
@@ -118,7 +128,7 @@ const App: React.FC = () => {
         <ul className="search-list">
           {suggestions.map(suggestion => (
             <li
-              key={suggestion.place_id}
+              key={suggestion.placeId}
               onClick={() => handleSuggestionClick(suggestion)}
               className="search-list-item"
             >

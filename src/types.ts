@@ -1,5 +1,5 @@
 export interface Suggestion {
-  place_id: string
+  placeId: string
   description: string
 }
 
@@ -29,6 +29,31 @@ export interface ForecastUpcomingDays {
   days: DailyForecast[]
   location: Location
   today: DailyForecast
+}
+
+export interface DetailsAPILocation {
+  lat: number
+  lng: number
+}
+export interface DetailsAPIGeometry {
+  location: DetailsAPILocation
+}
+
+export interface DetailsAPIResult {
+  geometry: DetailsAPIGeometry
+}
+
+export interface DetailsAPIResponse {
+  result: DetailsAPIResult
+}
+
+export interface AutocompleteAPISuggestion {
+  place_id: string
+  description: string
+}
+
+export interface AutocompleteAPIResponse {
+  predictions: AutocompleteAPISuggestion[];
 }
 
 export interface WeatherbitAPIResponse {
