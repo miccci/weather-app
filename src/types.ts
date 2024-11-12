@@ -4,8 +4,8 @@ export interface Suggestion {
 }
 
 export interface Location {
-  location_name: string
-  country_code: string
+  locationName: string
+  countryCode: string
   latitude: number
   longitude: number
 }

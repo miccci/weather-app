@@ -79,8 +79,8 @@ const App: React.FC = () => {
       const forecastData: ForecastUpcomingDays = {
         days: weatherDailyForecast.slice(1),
         location: {
-          location_name: weatherResponse.data.city_name,
-          country_code: weatherResponse.data.country_code,
+          locationName: weatherResponse.data.city_name,
+          countryCode: weatherResponse.data.country_code,
           latitude: geolocation.lat,
           longitude: geolocation.lng,
         },
@@ -132,7 +132,7 @@ const App: React.FC = () => {
             <div>
               <div className="current-weather">
                 {forecast.today.temp > 0 && <span>+</span>}
-                {forecast.today.temp} <br /> {forecast.location.location_name}
+                {forecast.today.temp} <br /> {forecast.location.locationName}
               </div>
               <div className="current-weather-desc">{forecast.today.weather.description}</div>
               <div className="weather-stats">
